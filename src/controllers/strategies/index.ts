@@ -3,5 +3,5 @@ import Triangle from './triangle'
 
 export default {
   triangle: Triangle.declaration,
-  follow_ball: FollowBall.declaration,
+  followBall: FollowBall.declaration,
 }

@@ -1,7 +1,7 @@
 import { ActionSchema, Context, ServiceBroker } from 'moleculer'
 import { MoveToMessage } from '@nodetron/types/control/moveTo'
 import Strategies from '@nodetron/types/task-manager/tasks/strategies'
-import { Vector } from '@nodetron/math/Vector2D'
+import { Vector } from '@nodetron/math/vector2D'
 
 import { state } from '../../models/state'
 
@@ -35,21 +35,10 @@ export default class FollowBall extends Strategies {
 
       const vect = new Vector(ball.position.x - robot.position.x, ball.position.y - robot.position.y)
 
-      const norm = vect.norm()
-
-      let res: number
-      if (norm === 0.0) {
-        res = 0.0
-      } else {
-        vect.normalized()
-        res = Math.acos(vect.x)
-        if (vect.y < 0) res = -res
-      }
-
       void broker.call('control.moveTo', {
         id: this.id,
         target: { ...robot.position },
-        orientation: res,
+        orientation: vect.angle().value,
       } as MoveToMessage)
 
       return false
