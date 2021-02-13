@@ -8,7 +8,7 @@ import { state } from '../../models/state'
 /**
  * This class is an example of the new way to create Strategies.
  * It is basic and needs to be improved !
- * call "MSB.getAngle" ' { "id" : 0 }' (To try with npm run repl)
+ * call "MSB.followBall" ' { "id" : 0 }' (To try with npm run repl)
  */
 export default class FollowBall extends Strategies {
     name = 'followBall';
