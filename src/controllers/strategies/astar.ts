@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ActionSchema, Context, ServiceBroker } from 'moleculer'
 import { MoveToMessage } from '@nodetron/types/control/moveTo'
 import Strategies from '@nodetron/types/task-manager/tasks/strategies'
 
 import { state } from '../../models/state'
 
-import { Grid } from './astar/grid'
+import { Grid, Tile } from './astar/grid'
 /**
  * This class is an example of the new way to create Strategies.
  * It is basic and needs to be improved !
@@ -30,7 +31,13 @@ export default class AStar extends Strategies {
   }
 
   compute(broker: ServiceBroker): boolean {
+    const robot = state.world.robots.allies[this.id]
+
     const grid = new Grid(0.2)
+    grid.fillGrid(robot.id)
+
+    const openSet = new Array<Tile>()
+    openSet.push()
     grid.debugHeatMap('test')
 
     return true
