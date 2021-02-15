@@ -14,6 +14,8 @@ export class Tile {
   public weight = 0.0
 
   public gScore = 1e10
+
+  public parent: Tile | null = null
 }
 
 export class Grid {
