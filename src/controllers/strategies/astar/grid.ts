@@ -23,7 +23,7 @@ export class Grid {
 
   public shift: { x: number, y: number }
 
-  private data: Array<Array<Tile>>
+  public data: Array<Array<Tile>>
 
   constructor(public resolution: number) {
     const l = state.world.field.length + 1.0
@@ -96,17 +96,6 @@ export class Grid {
       }
     }
   }
-
-  // public addObstacle(p : Point, radius: number) : void {
-  //   console.log('todo', p, radius)
-  // }
-
-  // public coordToCell(x: number, y: number): Point {
-  //   return new Point(
-  //     Math.round((y + this.shift.y) / this.resolution),
-  //     Math.round((x + this.shift.x) / this.resolution),
-  //   )
-  // }
 
   public debugHeatMap(name: string): void {
     const file = fs.createWriteStream(`${name}.ppm`)

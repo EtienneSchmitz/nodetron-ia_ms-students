@@ -40,7 +40,6 @@ export class Cursor {
       }
 
       // Right-Bottom
-
       if (this.x < (this.grid.xlen - 1) && this.y < (this.grid.ylen - 1)) {
         v.push(new Point(this.x + 1, this.y + 1))
       }
