@@ -43,15 +43,20 @@ export default class AStar extends Strategies {
     const grid = new Grid(0.2)
     grid.fillGrid(robot.id)
 
-    const openSet = new Array<{ i: number, j: number }>()
+    const openSet = new Map<string, { i: number, j: number }>()
 
     const c = new Cursor(grid)
     c.update(robot.position)
 
+    openSet.set(`${c.x}${c.y}`, { i: c.x, j: c.y })
+
     c.getTile().gScore = 0
 
-    while (openSet.length > 0) {
-      const t = openSet.shift()
+    while (openSet.size > 0) {
+      const key = openSet.keys().next()
+      const t = openSet.get(key.value)
+      openSet.delete(key.value)
+
       if (t === undefined) { break }
 
       const p = new Point(t.i, t.j)
@@ -61,7 +66,12 @@ export default class AStar extends Strategies {
       current.visited = true
 
       if (this.target.distance(grid.cellToCoord(p.x, p.y)) < grid.resolution) {
-        // TODO
+        // TODO 
+        let tileChildren = current.parent
+        while (tileChildren?.parent !== undefined) {
+          broker.logger.info(tileChildren)
+          tileChildren = tileChildren.parent
+        }
       }
 
       for (const neighbour of c.findNeighbour()) {
@@ -71,7 +81,7 @@ export default class AStar extends Strategies {
         if (g < c.getTile().gScore) {
           c.getTile().parent = current
           c.getTile().gScore = g
-          openSet.push({ i: neighbour.x, j: neighbour.y }) // TODO Not good
+          openSet.set(`${c.x}${c.y}`, { i: neighbour.x, j: neighbour.y })
         }
       }
     }
