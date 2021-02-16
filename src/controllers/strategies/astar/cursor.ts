@@ -48,13 +48,19 @@ export class Cursor {
     return v
   }
 
-  public update(position: Point): void {
-    this.x = position.x
-    this.y = position.y
+  public update(position: Point, real: boolean): void {
+    if (real) {
+      const tmp = this.grid.coordToCell(position.x, position.y)
+      this.x = tmp.x
+      this.y = tmp.y
+    } else {
+      this.x = position.x
+      this.y = position.y
+    }
+
   }
 
-  public getTile() : Tile {
-    const p = this.grid.coordToCell(this.x, this.y)
-    return this.grid.data[p.x][p.y]
+  public getTile(): Tile {
+    return this.grid.data[this.x][this.y]
   }
 }

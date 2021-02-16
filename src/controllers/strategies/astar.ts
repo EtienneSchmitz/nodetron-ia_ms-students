@@ -8,7 +8,7 @@ import { AbstractPoint, Point } from '@nodetron/math/point2D'
 
 import { state } from '../../models/state'
 
-import { Grid, Tile } from './astar/grid'
+import { Grid } from './astar/grid'
 import { Cursor } from './astar/cursor'
 /**
  * This class is an example of the new way to create Strategies.
@@ -46,7 +46,7 @@ export default class AStar extends Strategies {
     const openSet = new Map<string, { i: number, j: number }>()
 
     const c = new Cursor(grid)
-    c.update(robot.position)
+    c.update(robot.position, true)
 
     openSet.set(`${c.x}${c.y}`, { i: c.x, j: c.y })
 
@@ -60,13 +60,12 @@ export default class AStar extends Strategies {
       if (t === undefined) { break }
 
       const p = new Point(t.i, t.j)
-      c.update(p)
+      c.update(p, false)
       const current = c.getTile()
 
       current.visited = true
 
       if (this.target.distance(grid.cellToCoord(p.x, p.y)) < grid.resolution) {
-        // TODO 
         let tileChildren = current.parent
         while (tileChildren?.parent !== undefined) {
           broker.logger.info(tileChildren)
@@ -75,12 +74,15 @@ export default class AStar extends Strategies {
       }
 
       for (const neighbour of c.findNeighbour()) {
-        c.update(neighbour)
-        if (c.getTile().visited) { continue }
-        const g = current.gScore + p.distance(x)
-        if (g < c.getTile().gScore) {
-          c.getTile().parent = current
-          c.getTile().gScore = g
+        console.log(neighbour)
+        c.update(neighbour, false)
+        const currentNeighbour = c.getTile()
+        if (currentNeighbour.visited) { continue }
+
+        const g = current.gScore + p.distance(neighbour)
+        if (g < currentNeighbour.gScore) {
+          currentNeighbour.parent = current
+          currentNeighbour.gScore = g
           openSet.set(`${c.x}${c.y}`, { i: neighbour.x, j: neighbour.y })
         }
       }
