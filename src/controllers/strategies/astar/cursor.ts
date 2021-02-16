@@ -57,10 +57,9 @@ export class Cursor {
       this.x = position.x
       this.y = position.y
     }
-
   }
 
   public getTile(): Tile {
-    return this.grid.data[this.x][this.y]
+    return this.grid.data[this.y][this.x]
   }
 }

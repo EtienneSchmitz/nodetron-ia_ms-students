@@ -66,6 +66,7 @@ export default class AStar extends Strategies {
       current.visited = true
 
       if (this.target.distance(grid.cellToCoord(p.x, p.y)) < grid.resolution) {
+        broker.logger.info('Arrivée')
         let tileChildren = current.parent
         while (tileChildren?.parent !== undefined) {
           broker.logger.info(tileChildren)
@@ -74,7 +75,6 @@ export default class AStar extends Strategies {
       }
 
       for (const neighbour of c.findNeighbour()) {
-        console.log(neighbour)
         c.update(neighbour, false)
         const currentNeighbour = c.getTile()
         if (currentNeighbour.visited) { continue }
