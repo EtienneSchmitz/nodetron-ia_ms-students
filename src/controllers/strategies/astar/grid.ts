@@ -16,6 +16,8 @@ export class Tile {
   public gScore = 1e10
 
   public parent: Tile | null = null
+
+  constructor(public i: number, public j: number) { }
 }
 
 export class Grid {
@@ -43,8 +45,13 @@ export class Grid {
       throw new Error('Problem with grid')
     }
 
-    this.data = Array.from({ length: this.ylen },
-      (): Tile[] => Array.from({ length: this.xlen }, () => new Tile()))
+    this.data = []
+    for (let j = 0; j < this.ylen; j++) {
+      this.data[j] = []
+      for (let i = 0; i < this.xlen; i++) {
+        this.data[j][i] = new Tile(i, j)
+      }
+    }
   }
 
   public cellToCoord(i: number, j: number): Point {
@@ -68,17 +75,17 @@ export class Grid {
 
         // Todo : Change this with feature Box.
         if (p.y >= -0.5 && p.y <= 0.5 && p.x <= -4.5 && p.x >= -4.7) {
-          this.data[j][i].weight = Math.max(this.data[j][i].weight, 10.0)
+          this.data[j][i].weight = Math.max(this.data[j][i].weight, 100.0)
         }
         if (p.y >= -0.5 && p.y <= 0.5 && p.x >= 4.5 && p.x <= 4.7) {
-          this.data[j][i].weight = Math.max(this.data[j][i].weight, 10.0)
+          this.data[j][i].weight = Math.max(this.data[j][i].weight, 100.0)
         }
 
         state.world.robots.allies.forEach((robot) => {
           if (robot.id === id) return
 
           const d = p.distance(robot.position)
-          let w = 10.0
+          let w = 100.0
           if (d > this.resolution) {
             w = 10.0 / (d / this.resolution)
           }
@@ -88,7 +95,7 @@ export class Grid {
 
         state.world.robots.opponents.forEach((robot) => {
           const d = p.distance(robot.position)
-          let w = 10.0
+          let w = 100.0
           if (d > this.resolution) {
             w = 10.0 / (d / this.resolution)
           }

@@ -48,6 +48,8 @@ export default class AStar extends Strategies {
     const c = new Cursor(grid)
     c.update(robot.position, true)
 
+    console.log(c.x, c.y)
+
     openSet.set(`${c.x}${c.y}`, { i: c.x, j: c.y })
 
     c.getTile().gScore = 0
